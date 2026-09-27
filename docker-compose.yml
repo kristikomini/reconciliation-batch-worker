@@ -1,0 +1,23 @@
+# `docker compose up --build` — SQL Server + the worker on its Quartz nightly schedule.
+# Drop a feed at ./sample-data/feed.csv (the layout is txn_id,account,amount,currency,value_date,counterparty);
+# the worker migrates the DB on start and reconciles the file on the configured cron.
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Your_strong_Pass123"
+    ports: [ "1433:1433" ]
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ConnectionStrings__Sql: "Server=sqlserver,1433;Database=reconciliation;User Id=sa;Password=Your_strong_Pass123;TrustServerCertificate=True"
+      Reconciliation__LandingFile: "/data/feed.csv"
+      # Every 5 minutes, for the demo (production would be a nightly cron like "0 0 2 * * ?").
+      Reconciliation__Cron: "0 0/5 * * * ?"
+    volumes:
+      - ./sample-data:/data:ro
+    depends_on: [ sqlserver ]

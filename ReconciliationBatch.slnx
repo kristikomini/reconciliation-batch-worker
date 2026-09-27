@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/Ingestion.Benchmarks/Ingestion.Benchmarks.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Reconciliation.Core/Reconciliation.Core.csproj" />
+    <Project Path="src/Reconciliation.Data/Reconciliation.Data.csproj" />
+    <Project Path="src/Reconciliation.Worker/Reconciliation.Worker.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Reconciliation.Tests/Reconciliation.Tests.csproj" />
+  </Folder>
+</Solution>
